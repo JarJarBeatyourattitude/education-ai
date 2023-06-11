@@ -23,6 +23,8 @@ import Card from "@/components/Chalks/Card";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import FileInput from "@/components/FileInput";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { Analytics } from '@vercel/analytics/react';
+
 
 const inter = Inter({ subsets: ["latin"] });
 const space_grotesk = Space_Grotesk({
@@ -423,6 +425,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Analytics />
     </main>
   );
 }
