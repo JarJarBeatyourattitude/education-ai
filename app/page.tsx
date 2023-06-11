@@ -173,40 +173,47 @@ export default function Home() {
 
     return docs;
   };
-
   const fetchSite = async (cogId: number) => {
+    console.log('fetchSite called, cogId:', cogId);
     setIsSiteFetching(cogId);
-
-    const docs = await getTextChunks(cogId);
-
-    const vectorStore = await MemoryVectorStore.fromDocuments(
-      docs,
-      new OpenAIEmbeddings(
-        {
-          openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-          stripNewLines: true,
-          verbose: true,
-        },
-        {
+    try {
+      const docs = await getTextChunks(cogId);
+      console.log('getTextChunks completed successfully, docs:', docs);
+  
+      const vectorStore = await MemoryVectorStore.fromDocuments(
+        docs,
+        new OpenAIEmbeddings(
+          {
+            openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+            stripNewLines: true,
+            verbose: true,
+          },
+          {
           basePath: process.env.NEXT_PUBLIC_OPENAI_ENDPOINT,
+          }
+        )
+      );
+      console.log('MemoryVectorStore creation completed successfully, vectorStore:', vectorStore);
+  
+      const conversationalChain = ConversationalRetrievalQAChain.fromLLM(
+        model,
+        vectorStore.asRetriever(),
+        {
+          questionGeneratorTemplate: CONDENSE_TEMPLATE,
+          qaTemplate: QA_TEMPLATE,
         }
-      )
-    );
-
-    const conversationalChain = ConversationalRetrievalQAChain.fromLLM(
-      model,
-      vectorStore.asRetriever(),
-      {
-        questionGeneratorTemplate: CONDENSE_TEMPLATE,
-        qaTemplate: QA_TEMPLATE,
-      }
-    );
-
-    setChain(conversationalChain);
-
-    setIsSiteFetching(null);
+      );
+      console.log('ConversationalRetrievalQAChain creation completed successfully, conversationalChain:', conversationalChain);
+      
+      setChain(conversationalChain);
+      console.log("chain set successfully")
+    } catch(error) {
+      console.error('Error occurred in fetchSite:', error);
+    } finally {
+      setIsSiteFetching(null);
+    }
   };
-
+  
   const handleChatSubmit = async (prompt: string) => {
     setStreamedAnswer("");
     setQuestion(prompt);
@@ -216,11 +223,17 @@ export default function Home() {
       ...prevMessages,
       { message: prompt, type: "userMessage" },
     ]);
-
-    const res = await chain.call({
-      question: prompt,
-      chat_history: [],
-    });
+    
+    let res: any;
+    if (chain) {
+      res = await chain.call({
+        question: prompt,
+        chat_history: [],
+      });
+    } else {
+      console.error('Chain is not initialized');
+    }
+    
 
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -258,7 +271,9 @@ export default function Home() {
       docs,
       new OpenAIEmbeddings(
         {
+          //openai_api_key: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
           openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+
           stripNewLines: true,
           verbose: true,
         },
