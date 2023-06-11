@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 interface CardProps {
-  cog: {
+  Chalk: {
     id: number;
     title: string;
     img: string;
@@ -18,22 +18,22 @@ const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
-const Card = ({ cog, fetchSite, isSiteFetching }: CardProps) => {
+const Card = ({ Chalk, fetchSite, isSiteFetching }: CardProps) => {
   return (
     <div
-      key={cog.id}
+      key={Chalk.id}
       className={`relative flex flex-col w-full rounded-xl p-5 transition-all duration-300 cursor-pointer transform active:scale-[0.98] hover:ring-[2.5px] active:ring-[2.5px] ${
-        isSiteFetching == cog.id - 1
+        isSiteFetching == Chalk.id - 1
           ? "bg-green-50 hover:bg-green-100 active:bg-green-100 hover:ring-green-200 active:ring-green-200 animate-pulse"
           : "bg-orange-50 hover:bg-orange-100 active:bg-orange-100 hover:ring-orange-200 active:ring-orange-200"
       }`}
-      onClick={() => fetchSite(cog.id - 1)}
+      onClick={() => fetchSite(Chalk.id - 1)}
     >
       <div className="flex items-center mb-2">
         <div className="relative w-8 h-8 bg-white rounded-md ring-1 ring-stone-200">
           <Image
-            src={cog.img}
-            alt={cog.title}
+            src={Chalk.img}
+            alt={Chalk.title}
             layout="fill"
             objectFit="contain"
             className="p-1 rounded-lg"
@@ -45,10 +45,10 @@ const Card = ({ cog, fetchSite, isSiteFetching }: CardProps) => {
             " ml-3 font-semibold text-lg text-zinc-800"
           }
         >
-          {cog.title}
+          {Chalk.title}
         </h5>
       </div>
-      <p className="text-sm font-light text-zinc-600">{cog.description}</p>
+      <p className="text-sm font-light text-zinc-600">{Chalk.description}</p>
     </div>
   );
 };

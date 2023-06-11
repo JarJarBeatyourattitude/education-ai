@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Cognition",
+  title: "ChalkBot",
   description: "Chat with any website",
 };
 

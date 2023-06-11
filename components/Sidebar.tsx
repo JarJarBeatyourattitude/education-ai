@@ -4,10 +4,10 @@
 import { sidebarWidthState } from "@/atoms/sidebar";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import Card from "./Cogs/Card";
+import Card from "./Chalks/Card";
 
 const Sidebar = () => {
-  const [cogs, setCogs] = useState<any>([
+  const [Chalks, setChalks] = useState<any>([
     {
       id: 1,
       title: "The Woodlands",

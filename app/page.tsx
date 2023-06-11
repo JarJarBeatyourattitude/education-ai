@@ -19,7 +19,7 @@ import { sidebarWidthState } from "@/atoms/sidebar";
 import { useRecoilState } from "recoil";
 import { BufferMemory } from "langchain/memory";
 import { writeFile } from "fs/promises";
-import Card from "@/components/Cogs/Card";
+import Card from "@/components/Chalks/Card";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import FileInput from "@/components/FileInput";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -51,7 +51,7 @@ export default function Home() {
       type: "apiMessage",
     },
   ]);
-  const cogs = [
+  const Chalks = [
     {
       id: 1,
       title: "The Woodlands",
@@ -91,9 +91,9 @@ export default function Home() {
     },
     {
       id: 4,
-      title: "Your Cog",
+      title: "Your Chalk",
       img: "https://www.raycast.com/_next/image?url=https%3A%2F%2Ffiles.raycast.com%2Fp83cp3dpry9ktfemji1dcy4af5jp&w=128&q=75",
-      description: "Your own cog",
+      description: "Your own Chalk",
       urls: [userUrl],
     },
   ];
@@ -134,7 +134,7 @@ export default function Home() {
 `;
 
   const QA_TEMPLATE = `
-  You are Cognition, a large language model.
+  You are ChalkBot, a large language model.
   Carefully heed the user's instructions.
   Respond using lots of Markdown. Make sure to use emojis throughout.
 
@@ -160,8 +160,8 @@ export default function Home() {
     return data.extracted_text;
   };
 
-  const getTextChunks = async (cogId: number) => {
-    const siteText = await scrapeSite(cogs[cogId].urls);
+  const getTextChunks = async (ChalkId: number) => {
+    const siteText = await scrapeSite(Chalks[ChalkId].urls);
 
     console.log(siteText);
 
@@ -173,11 +173,11 @@ export default function Home() {
 
     return docs;
   };
-  const fetchSite = async (cogId: number) => {
-    console.log('fetchSite called, cogId:', cogId);
-    setIsSiteFetching(cogId);
+  const fetchSite = async (ChalkId: number) => {
+    console.log('fetchSite called, ChalkId:', ChalkId);
+    setIsSiteFetching(ChalkId);
     try {
-      const docs = await getTextChunks(cogId);
+      const docs = await getTextChunks(ChalkId);
       console.log('getTextChunks completed successfully, docs:', docs);
   
       const vectorStore = await MemoryVectorStore.fromDocuments(
@@ -313,16 +313,16 @@ export default function Home() {
               space_grotesk.className + " font-medium text-zinc-700 pb-2"
             }
           >
-            Cognition
+            ChalkBot
           </span>
           <span className="pb-2">🔥</span>
         </div>
         <div className="w-full px-8 select-none">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-            {cogs.map((cog, idx) => (
+            {Chalks.map((Chalk, idx) => (
               <Card
                 key={idx}
-                cog={cog}
+                Chalk={Chalk}
                 fetchSite={fetchSite}
                 isSiteFetching={isSiteFetching}
               />
@@ -331,7 +331,7 @@ export default function Home() {
 
           <input
             type="text"
-            placeholder="URL of the site you want to cognite 🔗"
+            placeholder="URL of the site you want to Chalknite 🔗"
             onChange={(e) => setUserUrl(e.target.value)}
             className="w-full font-normal resize-none mt-8 hover:bg-zinc-50 rounded-md py-3 px-4 shadow-sm outline-none ring-1 ring-zinc-200 hover:ring-2 transition-all duration-300 hover:ring-zinc-300 focus:ring-2 focus:ring-orange-500 placeholder:text-zinc-500/60"
           />
@@ -349,7 +349,7 @@ export default function Home() {
             <div className="bg-zinc-100/75 rounded-xl px-4 py-3 text-zinc-700 max-w-xl break-words">
               <span className="prose transition-all duration-300">
                 <ReactMarkdown>
-                  {"Hi there! Try **cogniting** something 🔥"}
+                  {"Hi there! Try **Chalkniting** something 🔥"}
                 </ReactMarkdown>
               </span>
             </div>
@@ -398,7 +398,7 @@ export default function Home() {
                 name=""
                 id=""
                 onChange={(e) => setNotesText(e.target.value)}
-                placeholder="What would you like to cognite 🔥"
+                placeholder="What would you like to Chalknite 🔥"
                 className="w-full font-normal select-none resize-none hover:bg-zinc-50 rounded-md py-3 px-4 shadow-sm outline-none ring-1 ring-zinc-200 hover:ring-2 transition-all duration-300 hover:ring-zinc-300 focus:ring-2 focus:ring-orange-500 placeholder:text-zinc-500/60"
               ></input>
               {/* make a black button that says make question */}
@@ -415,7 +415,7 @@ export default function Home() {
                   </span>
                 ) : (
                   <span className="inline-flex gap-2">
-                    Cognite <p>🔥</p>
+                    Chalknite <p>🔥</p>
                   </span>
                 )}
               </button>
